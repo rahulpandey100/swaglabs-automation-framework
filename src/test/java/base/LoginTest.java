@@ -32,5 +32,39 @@ public class LoginTest extends BaseClass {
 		Assert.assertEquals(invalidCredentials, "Epic sadface: Username and password do not match any user in this service", "Error message mismatch!");
 	   
 	}
+	
+	@Test
+	public void loginWithEmptyFields() {
+		
+		LoginPage lp = new LoginPage(driver);
+		lp.login("", "");
+		String userNameRequired = lp.getErrorMessage();
+		Assert.assertEquals(userNameRequired, "Epic sadface: Username is required");
+		
+	}
+	
+	@Test
+	public void loginWithLockedOutUser() {
+		LoginPage lp = new LoginPage(driver);
+		String userName = JsonReader.getData("lockedUser", "username");
+		String password = JsonReader.getData("lockedUser", "password");
+		
+		lp.login(userName, password);
+		
+		String userLockedOut = lp.getErrorMessage();
+		Assert.assertEquals(userLockedOut,"Epic sadface: Sorry, this user has been locked out.");
+	}
+	
+	@Test
+	public void verifyLoginWithSQLInjection() {
+		LoginPage lp = new LoginPage(driver);
+		String userName = JsonReader.getData("login_with_sqlInjection", "username");
+		String password = JsonReader.getData("login_with_sqlInjection", "password");
+		
+		lp.login(userName, password);
+		
+		String userLockedOut = lp.getErrorMessage();
+		Assert.assertEquals(userLockedOut,"Epic sadface: Username and password do not match any user in this service", "Application is vulnerable to SQL Injection!"); 
+	}
 
 }

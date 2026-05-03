@@ -17,7 +17,8 @@ public class LoginPage {
     private By usernameField = By.cssSelector("#user-name");
     private By passwordField = By.cssSelector("#password");
     private By loginButton = By.cssSelector("#login-button");
-    private By errorMessage =By.xpath("//div/h3[text()='Epic sadface: Username and password do not match any user in this service']");
+    private By errorMessage =By.cssSelector("h3[data-test='error']");
+   
 
     // Constructor
     public LoginPage(WebDriver driver) {

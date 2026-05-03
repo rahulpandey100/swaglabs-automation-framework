@@ -10,5 +10,9 @@
   "invalidUser":{
   "username":"test",
   "password":"123"
-  }
+  },
+  "login_with_sqlInjection":{
+    "username":"' OR 1=1",
+    "password": "secret_sauce"
+    }
 }
