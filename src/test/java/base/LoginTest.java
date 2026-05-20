@@ -1,6 +1,7 @@
 package base;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import pages.LoginPage;
@@ -8,22 +9,30 @@ import utils.JsonReader;
 
 public class LoginTest extends BaseClass {
 	
+	LoginPage lp;
+	
+	@BeforeMethod
+	
+	public void setUpPage(){
+		lp=new LoginPage(getDriver());
+	}
+	
 	@Test
 	public void verifyLogin() {
 		
-		LoginPage lp = new LoginPage(driver);
+		
 		String userName = JsonReader.getData("validUser","username");
 		String password = JsonReader.getData("validUser", "password");
 		lp.login(userName, password);	
 		
-		String currentUrl = driver.getCurrentUrl();
+		String currentUrl = getDriver().getCurrentUrl();
 	    Assert.assertTrue(currentUrl.contains("inventory"), "Login Failed!");
 	}
 	
 	@Test
 	public void verifyInvalidLogin() {
 		
-		LoginPage lp = new LoginPage(driver);
+//		LoginPage lp = new LoginPage(driver);
 		String userName = JsonReader.getData("invalidUser","username");
 		String password = JsonReader.getData("invalidUser", "password");
 		lp.login(userName, password);	
@@ -36,7 +45,7 @@ public class LoginTest extends BaseClass {
 	@Test
 	public void loginWithEmptyFields() {
 		
-		LoginPage lp = new LoginPage(driver);
+//		LoginPage lp = new LoginPage(driver);
 		lp.login("", "");
 		String userNameRequired = lp.getErrorMessage();
 		Assert.assertEquals(userNameRequired, "Epic sadface: Username is required");
@@ -45,7 +54,7 @@ public class LoginTest extends BaseClass {
 	
 	@Test
 	public void loginWithLockedOutUser() {
-		LoginPage lp = new LoginPage(driver);
+//		LoginPage lp = new LoginPage(driver);
 		String userName = JsonReader.getData("lockedUser", "username");
 		String password = JsonReader.getData("lockedUser", "password");
 		
@@ -57,7 +66,7 @@ public class LoginTest extends BaseClass {
 	
 	@Test
 	public void verifyLoginWithSQLInjection() {
-		LoginPage lp = new LoginPage(driver);
+//		LoginPage lp = new LoginPage(driver);
 		String userName = JsonReader.getData("login_with_sqlInjection", "username");
 		String password = JsonReader.getData("login_with_sqlInjection", "password");
 		
